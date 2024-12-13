@@ -21,16 +21,18 @@ class SliveredView extends StatelessWidget {
         headerSliverBuilder: (_, __) {
           return [
             SliverAppBar(
+              // backgroundColor: Colors.black,
               backgroundColor: Theme.of(context).colorScheme.background,
               expandedHeight: 58,
-              flexibleSpace: FlexibleSpaceBar(
+              flexibleSpace:
+              FlexibleSpaceBar(
                 title: Text(title, style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                     color: Theme.of(context).colorScheme.onPrimary)),
                 centerTitle: false,
-                titlePadding:
-                EdgeInsets.fromLTRB(16, 0, 0, 0), // EdgeInsetsDirectional.only(start: 24, bottom: 0)
+                // titlePadding: EdgeInsets.zero,
+                titlePadding: EdgeInsets.fromLTRB(16, 0, 0, 0), // EdgeInsetsDirectional.only(start: 24, bottom: 0)
                 collapseMode: CollapseMode.none,
               ),
             ),

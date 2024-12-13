@@ -36,6 +36,7 @@ class I18n {
     Language.eng: {
       "about_pariyatti": "About Pariyatti",
       "account": "Account",
+      "old student?": "Old Student?",
       "app_name": "Pariyatti",
       "bookmarks": "Bookmarks",
       "contact_pariyatti": "Contact Pariyatti",
@@ -69,10 +70,12 @@ class I18n {
       "system_default": "System Default",
       "theme": "Theme",
       "today": "Today",
+      // "resources": "Resources",
       "translation": "Translation",
       "try_again_later": "An error occurred. Please try again later.",
       "was_empty": "was empty",
       "words_of_the_buddha": "Daily Words of the Buddha",
+      "library": "Library",
     },
 
     Language.fra: {

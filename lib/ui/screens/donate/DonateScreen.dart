@@ -72,3 +72,10 @@ class DonateScreen extends StatelessWidget {
   }
 
 }
+
+
+// Text("Resources")
+// Text(I18n.get("Old Student?")),
+// Text(I18n.get("Resources")),
+// IconButton(onPressed: (){},
+//     icon: Icon(Icons.search))

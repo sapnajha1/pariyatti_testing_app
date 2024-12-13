@@ -1,4 +1,4 @@
-env = sandbox
+env = local
 .PHONY: help init-flutter init test run
 # HELP sourced from https://gist.github.com/prwhite/8168133
 
@@ -42,9 +42,10 @@ clean_local_environment:
 
 clean: clean_local_environment ##@Development Clean various caches
 	rm -rf ~/.gradle/caches/*
-	cd ios && rm -rf Podfile.lock
-	cd ios && rm -rf ./Pods
-	cd ios && pod cache clean --all
+#	cd ios && rm -rf Podfile.lock
+#	cd ios && rm -rf ./Pods
+#	cd ios && pod cache clean --all
+	./bin/clean_ios.sh
 	flutter clean
 
 destroy: init-clean clean ##@Development Destroy all caches
@@ -64,7 +65,8 @@ repair-xcode: ##@Development Run a build in XCode to repair mysterious failures
 
 build: ##@Development (Re)build project
 	flutter pub get
-	cd ios && pod install --repo-update
+	#cd ios && pod install --repo-update
+	./bin/rebuild_ios.sh
 	flutter pub run build_runner build --delete-conflicting-outputs
 
 watch: ##@Development Build continuously (gen files)

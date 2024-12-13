@@ -4,10 +4,11 @@ import 'package:patta/ui/common/pariyatti_icons.dart';
 import 'package:patta/ui/common/slivered_view.dart';
 import 'package:patta/ui/screens/account/AccountScreen.dart';
 import 'package:patta/ui/screens/donate/DonateScreen.dart';
+import 'package:patta/ui/screens/resources/ResourcesScreen.dart';
 import 'package:patta/ui/screens/today/TodayScreen.dart';
 
-enum HomeScreenTab { TODAY, ACCOUNT, DONATE }
-
+enum HomeScreenTab { TODAY, ACCOUNT, DONATE , LIBRARY }
+// RESOURCES
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int bottomNavigationBarIndex;
+    int bottomNavigationBarIndex ;
     String titleText;
     Widget bodyWidget;
     switch (_tab) {
@@ -50,15 +51,33 @@ class _HomeScreenState extends State<HomeScreen> {
           body: DonateScreen(),
         );
         break;
+
+        //Tab for resources or Library...
+
+      case HomeScreenTab.LIBRARY:
+        bottomNavigationBarIndex = 3;
+        titleText = '${I18n.get("library")} ';
+        bodyWidget = ResourcesScreen();
+        break;
+
+      // case HomeScreenTab.RESOURCES:
+      //   bottomNavigationBarIndex = 3;
+      //   titleText = '${I18n.get("resources")} ';
+      //   bodyWidget = SliveredView(
+      //     title: titleText,
+      //     body: ResourcesScreen(),
+      //   );
+      //   break;
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: bodyWidget,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: bottomNavigationBarIndex,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         fixedColor: Theme.of(context).colorScheme.inversePrimary,
+        type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
@@ -92,6 +111,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
               label: I18n.get("donate")
+          ),
+
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.video_library_rounded,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              activeIcon: Icon(
+                Icons.video_library_rounded,
+                color: Theme.of(context).colorScheme.inversePrimary,
+              ),
+              label: I18n.get("library")
           ),
         ],
         onTap: (int tappedItemIndex) {
