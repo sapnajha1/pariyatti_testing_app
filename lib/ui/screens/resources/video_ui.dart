@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vimeo_player_flutter/vimeo_player_flutter.dart';
+import 'package:vimeo_video_player/vimeo_video_player.dart';
 
 class VimeoPlayerScreen extends StatelessWidget {
   final String videoId;
@@ -28,7 +28,7 @@ class VimeoPlayerScreen extends StatelessWidget {
             },
           ),
         ],
-      ),      body: VimeoPlayer(videoId: '1011864064'),
+      ),      body: VimeoVideoPlayer(videoId: videoId),
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:patta/ui/screens/resources/video_ui.dart';
-import 'package:vimeo_player_flutter/vimeo_player_flutter.dart';
 
 /// Video model to hold video details
 class Video {
@@ -31,31 +32,25 @@ class ResourcesScreen extends StatefulWidget {
 class _ResourcesScreenState extends State<ResourcesScreen> {
   late Future<List<Video>> _videoList;
   int selectedIndex = 0;
+  List<Video>? preloadedVideos;
 
   @override
   void initState() {
     super.initState();
-    _videoList = fetchVideos(); // Ensure the type matches here
-  }
-
-  /// Fetches videos from the API
-  Future<List<Video>> fetchVideos() async {
-    final url = Uri.parse('https://kosa-staging.pariyatti.app/api/v1/library/videos.json');
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      return jsonData.map<Video>((video) => Video.fromJson(video)).toList();
+    // Check if videos are preloaded
+    if (preloadedVideos != null) {
+      _videoList = Future.value(preloadedVideos);
     } else {
-      throw Exception('Failed to load videos');
+      _videoList = fetchVideos();
     }
   }
 
-    void _onTabTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _videoList = fetchVideos(); // Ensure the type matches here
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -151,14 +146,21 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                               // Video Thumbnail Placeholder
                               Container(
                                 height: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                    image: NetworkImage(video.thumbnailUrl),
-                                    fit: BoxFit.cover,
-                                  ),
+                                child: CachedNetworkImage(
+                                  imageUrl: video.thumbnailUrl,
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
                                 ),
                               ),
+
+                                // decoration: BoxDecoration(
+                                //   borderRadius: BorderRadius.circular(10),
+                                //   image: DecorationImage(
+                                //     image: NetworkImage(video.thumbnailUrl),
+                                //     fit: BoxFit.cover,
+                                //   ),
+                                // ),
+                              // ),
                               // Video Title
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
@@ -186,6 +188,35 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
       ),
     );
   }
+
+
+/// Fetches videos from the API
+Future<List<Video>> fetchVideos() async {
+  final url = Uri.parse('https://kosa-staging.pariyatti.app/api/v1/library/videos.json');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonData = jsonDecode(response.body);
+    final videos = jsonData.map<Video>((video) => Video.fromJson(video)).toList();
+
+    // Preload thumbnails in the background
+    for (var video in videos) {
+      await DefaultCacheManager().getSingleFile(video.thumbnailUrl);
+    }
+
+    // Cache videos for future use
+    preloadedVideos = videos;
+    return videos;
+  } else {
+    throw Exception('Failed to load videos');
+  }
+}
+
+void _onTabTapped(int index) {
+  setState(() {
+    selectedIndex = index;
+  });
+}
 }
 
 // class VimeoPlayerScreen extends StatelessWidget {

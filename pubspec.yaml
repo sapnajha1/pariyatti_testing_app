@@ -39,7 +39,7 @@ dependencies:
   video_player: ^2.9.2
   share_plus: ^10.0.2
   url_launcher: ^6.1.7
-  vimeo_player_flutter: ^0.1.0
+  vimeo_video_player: ^1.0.0
   smooth_page_indicator: ^1.2.0+3
 
 dev_dependencies:
